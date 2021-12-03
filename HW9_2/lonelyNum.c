@@ -14,31 +14,62 @@ int main () {
         scanf("%d",&array[i]);
     }
     int lonelyNumIndex=0;
-    int b=0;
-    int c=0;
+    int b=1;
+    int c=2;
+    int next=0;
+    record_B[b]=1;
+    record_C[b]=1;
+    record_B[lonelyNumIndex]=1;
+    record_C[lonelyNumIndex]=1;
     for(;;){
-        for(;;){
-            if(b==lonelyNumIndex ||record[b]==1||record_B[b]==1){
-                b++;
-                if(b==n){
-                    printf("%d",array[lonelyNumIndex]);
-                    return 0;
+        if(next==1){
+            c=0;
+            for(int j=0;j<n;j++){
+                record_C[j] = 0;
+                if(record[j]==1) record_C[j] = 1;
+            }
+            for(;;){
+                if(record[b]==1||record_B[b]==1){
+                    b++;
+                    if(b==n){
+                        printf("%d",array[lonelyNumIndex]);
+                        return 0;
+                    }
+                    
+                }else {
+                    record_B[b]=1;
+                    record_C[b]=1;
+                    break;
                 }
-                
-            }else break;
+            }
+
+            next=0;
         }
+    
         for(;;){
-            if(c==lonelyNumIndex||c==b||record[c]==1||record_C[c]==1){
+            if(record[c]==1||record_C[c]==1){
                 c++;
                 if(c==n) c=c%n;
             }else break;
             
         }
+
+
         int sum = array[lonelyNumIndex] + array[b];
         if(sum==array[c]){
             record[lonelyNumIndex] = 1;
             record[b] = 1;
             record[c] = 1;
+            for(int j=0;j<n;j++){
+                record_B[j] = 0;
+                record_C[j] = 0;
+            }
+            for(int i=0;i<n;i++){
+                if(record[i]==1){
+                    record_B[i] = 1;
+                    record_C[i] = 1;
+                }
+            }
             for(;;){
                 if(record[lonelyNumIndex]==1){
                     lonelyNumIndex++;
@@ -46,21 +77,41 @@ int main () {
                         printf("%d",array[lonelyNumIndex]);
                         return 0;
                     }
-                    for(int i=0;i<n;i++){
-                        record_B[i] = 0;
-                        record_C[i] = 0;
-                    }
-                }else break;
+
+                }else {
+                    next=1;
+                    record_C[lonelyNumIndex] = 1;
+                    record_B[lonelyNumIndex] = 1;
+                    break;
+                }
             
             }
         }else{
-            record_B[b]=1;
             record_C[c] = 1;
-            b++;
-            c++;
+            for(int i=0;i<n;i++){
+                if(record_C[i]==0){
+                    next=0;
+                    break;
+                }
+                next=1;
+            }
         }
 
 
     }
     return 0;
 }
+
+
+// record_B[b]=1;
+
+//     for(;;){
+//             if(b==lonelyNumIndex ||record[b]==1||record_B[b]==1){
+//                 b++;
+//                 if(b==n){
+//                     printf("%d",array[lonelyNumIndex]);
+//                     return 0;
+//                 }
+                
+//             }else break;
+//         }
