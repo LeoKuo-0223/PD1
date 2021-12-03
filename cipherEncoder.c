@@ -1,8 +1,12 @@
 #include<stdio.h>
 int k;
 char message;
+
+
 int main(){
+
 	scanf("%d",&k);
+
 	while(getchar()!='\n');
 	while((message = getchar())!='\n'){
 		if(k>=0){
