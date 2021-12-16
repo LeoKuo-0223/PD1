@@ -9,10 +9,10 @@ void To_Lowwer(char* str);
 void Compress(char* str);
 int main(){
     char word;
-    char str[1100]={'\0'};
+    char str[3000]={'\0'};
     int size=0;
     int num;
-    char action[20];
+    char action[20]={'\0'};
     char print[]="PRINT";char reverse[]="REVERSE";char remove[]="REMOVE";
     char Upper[]="TO_UPPER";char Lower[]="TO_LOWER";char compress[]="COMPRESS";
     while((word=getchar())!='\n'){
@@ -40,7 +40,7 @@ int main(){
             Compress(str);
         }
     }
-    
+    return 0;
 }
 
 
@@ -75,7 +75,7 @@ void Remove(char* str,char target){
     printf("\n");
 }
 void Reverse(char* str){
-    char temp[1025];
+    char temp[3000];
     int count=0;
     for(int i=0;str[i]!='\0';i++){
         temp[i] = str[i];
@@ -113,12 +113,12 @@ void To_Lowwer(char* str){
     printf("\n");
 }
 char IntegerToStr(int integer){
-	return integer+48;
+ return integer+48;
 }
 void Compress(char* str){
     int record[500]={0};//紀錄每種字元重複的數量
     int count=0;
-    char record_nonrepeat[100]={'\0'}; //紀錄不重複的字元
+    char record_nonrepeat[200]={'\0'}; //紀錄不重複的字元
     char pre;
     pre=str[0];
     record_nonrepeat[count] = str[0];
@@ -134,16 +134,18 @@ void Compress(char* str){
 
     }
     int index=0;
+    int count__ = 0; //改2. 141行變數宣告而已
     for(int i=0;i<count+1;i++){
         str[index] = '-';
         str[index+1] = record_nonrepeat[i];
-        if(record[index]<=9){
+        if(record[count__]<=9){   
             str[index+2]=IntegerToStr(record[i]);
             index = index+3;
         }else{
+            index = index+2; //因為前面已經放了'-'跟char字元
             int tmp = record[i];
-            int place_value=0;
-            int next_gap;
+            int place_value = 0;
+            int next_gap = 0;
             int exp=1;
             for(;;){
                 if(tmp/exp==0){
@@ -153,16 +155,17 @@ void Compress(char* str){
                     place_value++;
                 }
             }
+            place_value--; //若是四位數字，則只需要多出三個空間
             next_gap = place_value+1;
             while(tmp!=0){
                 int oneth = tmp%10;
-                str[index+place_value]=IntegerToStr(oneth);
+                str[index+place_value]=IntegerToStr(oneth);  
                 place_value--;
                 tmp/=10;
             }
-            index+=next_gap;
+            index += next_gap;
         }
-
+        count__++; 
     }
     str[index] = '\0';
     for(int i=0;str[i]!='\0';i++){
